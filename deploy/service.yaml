@@ -10,12 +10,5 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
-  env:
-    - name: DB_HOST
-      value: golist-db-mariadb
-    - name: DB_USER
-      value: golist
-    - name: DB_PASS
-      value: golist
   selector:
     app: golist-api
