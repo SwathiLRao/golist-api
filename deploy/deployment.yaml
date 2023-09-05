@@ -37,6 +37,3 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /app/appconfig
-        resources: {}
-      volumes:
-        - name: config-volume
