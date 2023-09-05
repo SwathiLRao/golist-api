@@ -3,13 +3,12 @@ kind: Service
 metadata:
   labels:
     app: golist-api
-  name: golist-api
+    name: golist-api
 spec:
   ports:
-  - port: 8080
-    protocol: TCP
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
   selector:
     app: golist-api
-status:
-  loadBalancer: {}
