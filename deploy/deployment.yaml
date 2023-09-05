@@ -1,33 +1,44 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: golist-api
+  creationTimestamp: null
   labels:
     app: golist-api
-    tier: api
+  name: golist-api
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: golist-api
+  strategy: {}
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: golist-api
     spec:
       containers:
-        - name: golist-api
-          image: quay.io/christianh814/golist-api:latest
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
-          env:
-            - name: DB_HOST
-              value: qod-db
-            - name: DB_USER
-              value: user
-            - name: DB_PASS
-              value: pass
-          imagePullPolicy: Always
-      restartPolicy: Always
+      - image: quay.io/christianh814/golist-api:latest
+        name: golist-api
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/appconfig
+        resources: {}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: golist-api-config
